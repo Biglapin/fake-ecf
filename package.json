@@ -1,24 +1,40 @@
 {
-    "devDependencies": {
-        "@hotwired/stimulus": "^3.0.0",
-        "@symfony/stimulus-bridge": "^3.0.0",
-        "@symfony/webpack-encore": "^1.7.0",
-        "core-js": "^3.0.0",
-        "regenerator-runtime": "^0.13.2",
-        "webpack-notifier": "^1.6.0"
-    },
-    "license": "UNLICENSED",
-    "private": true,
-    "scripts": {
-        "dev-server": "encore dev-server",
-        "dev": "encore dev",
-        "watch": "encore dev --watch",
-        "build": "encore production --progress"
-    },
-    "dependencies": {
-        "@tailwindcss/postcss7-compat": "^2.2.17",
-        "autoprefixer": "^10.4.1",
-        "postcss-loader": "^6.2.1",
-        "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
-    }
+  "devDependencies": {
+    "@hotwired/stimulus": "^3.0.0",
+    "@symfony/stimulus-bridge": "^3.0.0",
+    "@symfony/webpack-encore": "^1.7.0",
+    "core-js": "^3.0.0",
+    "regenerator-runtime": "^0.13.2",
+    "webpack-notifier": "^1.6.0"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss7-compat": "^2.2.17",
+    "autoprefixer": "^10.4.1",
+    "postcss-loader": "^6.2.1",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
+  },
+  "name": "tailwind",
+  "version": "1.0.0",
+  "main": "postcss.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Biglapin/fake-ecf.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/Biglapin/fake-ecf/issues"
+  },
+  "homepage": "https://github.com/Biglapin/fake-ecf#readme",
+  "description": ""
 }
