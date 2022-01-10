@@ -2,14 +2,11 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Admin;
-use App\Entity\Author;
-use App\Entity\Book;
-use App\Entity\Genre;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Faker\Factory;
+use App\Entity\User;
 
 class AppFixtures extends Fixture
 {
@@ -26,18 +23,17 @@ class AppFixtures extends Fixture
         // $product = new Product();
         // $manager->persist($product);
 
-        $faker = Factory::create('fr-FR');
-        $admin = new Admin();
+       
+       $user = new User();
 
-        $admin->setEmail('user@test.com')
-              ->setRoles(['ROLES_ADMIN']);
+        $user->setEmail('user@test.com');
+        $user->setRoles(['ROLES_ADMIN']);
+        $user->setPassword($this->hasher->hashPassword($user, 'password'));
 
-        $password = $this->hasher->hashPassword($admin, 'password');
-        $admin->setPassword($password);
 
-        $manager->persist($admin);
+     $manager->persist($user);  
 
-                // create 20 authors!
+  /*               // create 20 authors!
                 for ($i = 0; $i < 20; $i++) {
                     $author = new Author();
                     $author->setLastName($faker->word(3, true));
@@ -59,7 +55,7 @@ class AppFixtures extends Fixture
                     $book->setIsReserved($faker->boolean(40));
 
                     $manager->persist($book);
-                }
+                } */
                 $manager->flush();
     }
 }
