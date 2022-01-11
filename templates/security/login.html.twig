@@ -3,9 +3,8 @@
 {% block title %}Connexion{% endblock %}
  
 {% block body %}
-<form method="post">
+
     {% if error %}
-    {{ dump(error) }}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 </head>
@@ -16,24 +15,52 @@
         </section>
  
         <section class="mt-10">
-            <form class="flex flex-col" method="POST" action="">
+            <form class="flex flex-col" method="post">
                 <div class="mb-6 pt-3 rounded bg-gray-200">
-                    <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="email">Email</label>
-                    <input type="text" id="email" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3">
+                    <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" 
+                            for="email">
+                            Email
+                    </label>
+                    <input type="text" 
+                           id="email" 
+                           name="email"
+                           class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4
+                                  border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                            >
                 </div>
                 <div class="mb-6 pt-3 rounded bg-gray-200">
-                    <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="password">Password</label>
-                    <input type="password" id="password" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3">
+                    <label 
+                        class="block text-gray-700 text-sm font-bold mb-2 ml-3"  
+                        for="password">
+                        Password
+                    </label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required
+                        class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4
+                               border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                        >
                 </div>
                 <div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                 </div>
                 <div class="flex justify-end">
-                    <a href="#" class="text-sm text-purple-600 hover:text-purple-700 hover:underline mb-6">Mot de passe oublié ? </a>
+                    <a href="#" class="text-sm text-purple-600 hover:text-purple-700 hover:underline mb-6">
+                    Mot de passe oublié ? 
+                    </a>
                 </div>
-                <button class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">Sign In</button>
+                <button class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2
+                               rounded shadow-lg hover:shadow-xl transition duration-200"
+                        type="submit">
+                        Connexion
+                </button>
                 <div class="max-w-lg mx-auto text-center mt-12 mb-6">
-                    <p class="text-white">Vous n'avez pas encore de compte ? <a href="#" class="font-bold           hover:underline">Inscrivez-vous</a>.</p>
+                    <p class="text-white">Vous n'avez pas encore de compte ? <a href="#" class="font-bold hover:underline">
+                        Inscrivez-vous
+                        </a>.
+                    </p>
                 </div>
             </form>
         </section>

@@ -25,13 +25,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $firstname;
+    private $first_name;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $name;
+    private $last_name;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $is_confirmed;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $is_banned;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $adress;
@@ -109,26 +112,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getFirstname(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->firstname;
+        return $this->first_name;
     }
 
-    public function setFirstname(?string $firstname): self
+    public function setFirstName(?string $first_name): self
     {
-        $this->firstname = $firstname;
+        $this->first_name = $first_name;
 
         return $this;
     }
 
-    public function getName(): ?string
+    public function getLastName(): ?string
     {
-        return $this->name;
+        return $this->last_name;
     }
 
-    public function setName(?string $name): self
+    public function setLastName(?string $last_name): self
     {
-        $this->name = $name;
+        $this->last_name = $last_name;
 
         return $this;
     }
@@ -141,6 +144,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsConfirmed(?bool $is_confirmed): self
     {
         $this->is_confirmed = $is_confirmed;
+
+        return $this;
+    }
+
+    public function getIsBanned(): ?bool
+    {
+        return $this->is_banned;
+    }
+
+    public function setIsBanned(?bool $is_banned): self
+    {
+        $this->is_banned = $is_banned;
 
         return $this;
     }
