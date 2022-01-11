@@ -7,6 +7,8 @@ use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Faker\Factory;
 use App\Entity\User;
+use App\Entity\Book;
+use App\Entity\Author;
 
 class AppFixtures extends Fixture
 {
@@ -31,9 +33,10 @@ class AppFixtures extends Fixture
         $user->setPassword($this->hasher->hashPassword($user, 'password'));
 
 
-     $manager->persist($user);  
+     $manager->persist($user);   
 
-  /*               // create 20 authors!
+   /*           $faker = Factory::create('fr-FR');
+               // create 20 authors!
                 for ($i = 0; $i < 20; $i++) {
                     $author = new Author();
                     $author->setLastName($faker->word(3, true));
@@ -42,20 +45,19 @@ class AppFixtures extends Fixture
 
                     $manager->persist($author);
                 }
-       
-
+    
                         // create book!
                 for ($i = 0; $i < 20; $i++) {
                     $book = new Book;
                     $book->setIdBook(rand(1,200));
                     $book->setTitle('title '.$i);
-                    $book->setImage('/images/book.jpg');
+                    $book->setImage('/images/book.png');
                     $book->setPublishingDate($faker->dateTimeBetween('-6 month', 'now'));
                     $book->setDescription($faker->text(20));
                     $book->setIsReserved($faker->boolean(40));
 
                     $manager->persist($book);
-                } */
+                }  */
                 $manager->flush();
     }
 }
