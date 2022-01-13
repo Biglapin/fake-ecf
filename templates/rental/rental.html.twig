@@ -78,10 +78,13 @@
                           >
                     Emprunter moi
                 </button>
+                
             </div>
             {% endfor %}   
         </div>
-
+        <div class="text-center justify-center flex h-12 font-medium rounded-full bg-gray-20">
+                {{ knp_pagination_render(books, 'rental/pagination.html.twig') }}
+        </div>
     </section>
 
     

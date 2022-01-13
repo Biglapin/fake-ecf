@@ -4,24 +4,36 @@ namespace App\Controller;
 
 use App\Repository\BookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 class RentalController extends AbstractController
 {
     #[Route('/rental', name: 'rental')]
-    public function indexBis(bookRepository $bookRepository): Response
+/*     public function indexBis(bookRepository $bookRepository): Response
     {
         return $this->render('rental/rental.html.twig', [
             'books' => $bookRepository->findBook(),
         ]);
     }
+ */
 
-
-    public function index(BookRepository $bookRepository): Response
+ //Bundle KNP pour gérer la pagination 
+    public function index( Request $request, BookRepository $bookRepository, PaginatorInterface $paginator): Response
     {
+        $book = $bookRepository->findAll();
+        
+        $book = $paginator->paginate(
+            $book, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            10/*limit per page*/
+        );
+
         return $this->render('rental/rental.html.twig', [
-            'books' => $bookRepository->findAll(),
+            'books' => $book,
         ]);
     }
 }
