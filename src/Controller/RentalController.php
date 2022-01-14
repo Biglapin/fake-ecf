@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
-
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class RentalController extends AbstractController
 {
@@ -36,4 +36,21 @@ class RentalController extends AbstractController
             'books' => $book,
         ]);
     }
+
+    /**
+     * @Route("/api", name="google")
+     */
+    public function google(HttpClientInterface $http) {
+        
+        $response = $http->request('GET','https://openlibrary.org/works/OL45883W.json');
+
+        dd($response->toArray());
+        return $this->render('rental/goole.html.twig', [
+            'controller_name' => "RentalController"
+        ]);
+    }
+
+
+
 }
+
