@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BookRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
@@ -19,17 +21,32 @@ class Book
     #[ORM\Column(type: 'string', length: 255)]
     private $title;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $image;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $images;
 
     #[ORM\Column(type: 'date', nullable: true)]
     private $publishing_date;
 
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
+    #[ORM\ManyToOne(targetEntity: Author::class, inversedBy: 'books')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $id_author;
+
+    #[ORM\ManyToMany(targetEntity: Genre::class, inversedBy: 'books')]
+    private $genre;
+
+    #[ORM\OneToOne(mappedBy: 'id_book', targetEntity: Borrowing::class, cascade: ['persist', 'remove'])]
+    private $borrowing;
+
     #[ORM\Column(type: 'boolean')]
-    private $is_reserved;
+    private $isReserved;
+
+    public function __construct()
+    {
+        $this->genre = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -60,14 +77,14 @@ class Book
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getImages(): ?string
     {
-        return $this->image;
+        return $this->images;
     }
 
-    public function setImage(?string $image): self
+    public function setImages(string $images): self
     {
-        $this->image = $image;
+        $this->images = $images;
 
         return $this;
     }
@@ -89,21 +106,74 @@ class Book
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getIsReserved(): ?bool
+    public function getIdAuthor(): ?Author
     {
-        return $this->is_reserved;
+        return $this->id_author;
     }
 
-    public function setIsReserved(bool $is_reserved): self
+    public function setIdAuthor(?Author $id_author): self
     {
-        $this->is_reserved = $is_reserved;
+        $this->id_author = $id_author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Genre[]
+     */
+    public function getGenre(): Collection
+    {
+        return $this->genre;
+    }
+
+    public function addGenre(Genre $genre): self
+    {
+        if (!$this->genre->contains($genre)) {
+            $this->genre[] = $genre;
+        }
+
+        return $this;
+    }
+
+    public function removeGenre(Genre $genre): self
+    {
+        $this->genre->removeElement($genre);
+
+        return $this;
+    }
+
+    public function getBorrowing(): ?Borrowing
+    {
+        return $this->borrowing;
+    }
+
+    public function setBorrowing(Borrowing $borrowing): self
+    {
+        // set the owning side of the relation if necessary
+        if ($borrowing->getIdBook() !== $this) {
+            $borrowing->setIdBook($this);
+        }
+
+        $this->borrowing = $borrowing;
+
+        return $this;
+    }
+
+    public function getIsReserved(): ?bool
+    {
+        return $this->isReserved;
+    }
+
+    public function setIsReserved(bool $isReserved): self
+    {
+        $this->isReserved = $isReserved;
 
         return $this;
     }

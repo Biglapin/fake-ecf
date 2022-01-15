@@ -26,16 +26,16 @@ class AppFixtures extends Fixture
         // $manager->persist($product);
 
        
-       $user = new User();
+/*        $user = new User();
 
-        $user->setEmail('user@test.com');
-        $user->setRoles(['ROLE_ADMIN']);
+        $user->setEmail('k@test.com');
+        $user->setRoles(['ROLE_USER']);
         $user->setPassword($this->hasher->hashPassword($user, 'password'));
 
 
-     $manager->persist($user);   
+    $manager->persist($user);    */
 
-   /*           $faker = Factory::create('fr-FR');
+         $faker = Factory::create('fr-FR');
                // create 20 authors!
                 for ($i = 0; $i < 20; $i++) {
                     $author = new Author();
@@ -51,13 +51,13 @@ class AppFixtures extends Fixture
                     $book = new Book;
                     $book->setIdBook(rand(1,200));
                     $book->setTitle('title '.$i);
-                    $book->setImage('/images/book.png');
+                    $book->setImages('/images/book.png');
                     $book->setPublishingDate($faker->dateTimeBetween('-6 month', 'now'));
-                    $book->setDescription($faker->text(20));
+                    $book->setDescription($faker->text(200));
                     $book->setIsReserved($faker->boolean(40));
 
                     $manager->persist($book);
-                }  */
+                }   
                 $manager->flush();
     }
 }

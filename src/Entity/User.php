@@ -24,23 +24,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private $password;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $id_user;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $family_name;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $first_name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $last_name;
-
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $is_confirmed;
-
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $is_banned;
+    #[ORM\Column(type: 'date', nullable: true)]
+    private $birth_date;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $adress;
-
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $birth_date;
 
     public function getId(): ?int
     {
@@ -112,6 +109,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
+    public function getIdUser(): ?int
+    {
+        return $this->id_user;
+    }
+
+    public function setIdUser(?int $id_user): self
+    {
+        $this->id_user = $id_user;
+
+        return $this;
+    }
+
+    public function getFamilyName(): ?string
+    {
+        return $this->family_name;
+    }
+
+    public function setFamilyName(?string $family_name): self
+    {
+        $this->family_name = $family_name;
+
+        return $this;
+    }
+
     public function getFirstName(): ?string
     {
         return $this->first_name;
@@ -124,38 +145,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getLastName(): ?string
+    public function getBirthDate(): ?\DateTimeInterface
     {
-        return $this->last_name;
+        return $this->birth_date;
     }
 
-    public function setLastName(?string $last_name): self
+    public function setBirthDate(?\DateTimeInterface $birth_date): self
     {
-        $this->last_name = $last_name;
-
-        return $this;
-    }
-
-    public function getIsConfirmed(): ?bool
-    {
-        return $this->is_confirmed;
-    }
-
-    public function setIsConfirmed(?bool $is_confirmed): self
-    {
-        $this->is_confirmed = $is_confirmed;
-
-        return $this;
-    }
-
-    public function getIsBanned(): ?bool
-    {
-        return $this->is_banned;
-    }
-
-    public function setIsBanned(?bool $is_banned): self
-    {
-        $this->is_banned = $is_banned;
+        $this->birth_date = $birth_date;
 
         return $this;
     }
@@ -168,18 +165,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAdress(?string $adress): self
     {
         $this->adress = $adress;
-
-        return $this;
-    }
-
-    public function getBirthDate(): ?\DateTimeInterface
-    {
-        return $this->birth_date;
-    }
-
-    public function setBirthDate(?\DateTimeInterface $birth_date): self
-    {
-        $this->birth_date = $birth_date;
 
         return $this;
     }
