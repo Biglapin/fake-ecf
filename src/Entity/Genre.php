@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\GenreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GenreRepository::class)]
@@ -16,25 +15,7 @@ class Genre
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $adventure;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $fantasy;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $horror;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $romance;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $thriller;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $comedy;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $other;
+    private $name;
 
     #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'genre')]
     private $books;
@@ -49,108 +30,22 @@ class Genre
         return $this->id;
     }
 
-    public function getAdventure(): ?string
+    public function getName(): ?string
     {
-        return $this->adventure;
+        return $this->name;
     }
 
-    public function setAdventure(string $adventure): self
+    public function setName(string $name): self
     {
-        $this->adventure = $adventure;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getFantasy(): ?string
+    public function __toString()
     {
-        return $this->fantasy;
+        return $this->name;
     }
-
-    public function setFantasy(string $fantasy): self
-    {
-        $this->fantasy = $fantasy;
-
-        return $this;
-    }
-
-    public function getHorror(): ?string
-    {
-        return $this->horror;
-    }
-
-    public function setHorror(string $horror): self
-    {
-        $this->horror = $horror;
-
-        return $this;
-    }
-
-    public function getRomance(): ?string
-    {
-        return $this->romance;
-    }
-
-    public function setRomance(string $romance): self
-    {
-        $this->romance = $romance;
-
-        return $this;
-    }
-
-    public function getThriller(): ?string
-    {
-        return $this->thriller;
-    }
-
-    public function setThriller(string $thriller): self
-    {
-        $this->thriller = $thriller;
-
-        return $this;
-    }
-
-    public function getComedy(): ?string
-    {
-        return $this->comedy;
-    }
-
-    public function setComedy(string $comedy): self
-    {
-        $this->comedy = $comedy;
-
-        return $this;
-    }
-
-    public function getOther(): ?string
-    {
-        return $this->other;
-    }
-
-    public function setOther(string $other): self
-    {
-        $this->other = $other;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Book[]
-     */
-    public function getBooks(): Collection
-    {
-        return $this->books;
-    }
-
-    public function addBook(Book $book): self
-    {
-        if (!$this->books->contains($book)) {
-            $this->books[] = $book;
-            $book->addGenre($this);
-        }
-
-        return $this;
-    }
-
     public function removeBook(Book $book): self
     {
         if ($this->books->removeElement($book)) {

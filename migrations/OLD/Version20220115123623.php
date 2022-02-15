@@ -20,7 +20,7 @@ final class Version20220115123623 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE genre (id INT AUTO_INCREMENT NOT NULL, adventure VARCHAR(255) NOT NULL, fantasy VARCHAR(255) NOT NULL, horror VARCHAR(255) NOT NULL, romance VARCHAR(255) NOT NULL, thriller VARCHAR(255) NOT NULL, comedy VARCHAR(255) NOT NULL, other VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE genre (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }
 
     public function down(Schema $schema): void

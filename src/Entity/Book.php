@@ -34,7 +34,7 @@ class Book
     #[ORM\JoinColumn(nullable: false)]
     private $id_author;
 
-    #[ORM\ManyToMany(targetEntity: Genre::class, inversedBy: 'books')]
+    #[ORM\ManyToOne(targetEntity: Genre::class, inversedBy: 'books')]
     private $genre;
 
     #[ORM\OneToOne(mappedBy: 'id_book', targetEntity: Borrowing::class, cascade: ['persist', 'remove'])]
@@ -176,5 +176,9 @@ class Book
         $this->isReserved = $isReserved;
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->name;
     }
 }

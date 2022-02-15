@@ -20,7 +20,7 @@ final class Version20220115124851 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE borrowing ADD id_book_id INT NOT NULL, ADD id_user_id INT NOT NULL');
+        $this->addSql('ALTER TABLE borrowing ADD id_book_id INT NOT NULL AUTO_INCREMENT, ADD id_user_id INT NOT NULL');
         $this->addSql('ALTER TABLE borrowing ADD CONSTRAINT FK_226E5897C83F1AF1 FOREIGN KEY (id_book_id) REFERENCES book (id)');
         $this->addSql('ALTER TABLE borrowing ADD CONSTRAINT FK_226E589779F37AE5 FOREIGN KEY (id_user_id) REFERENCES user (id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_226E5897C83F1AF1 ON borrowing (id_book_id)');

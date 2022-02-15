@@ -26,6 +26,7 @@ class RegisterController extends AbstractController
     #[Route('/register', name: 'register')]
     public function index(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
+        $notification = null;
 
         $user = new User();
         $form = $this->createForm( RegisterType::class, $user);
@@ -41,10 +42,15 @@ class RegisterController extends AbstractController
 
            $this->entityManager->persist($user);
            $this->entityManager->flush();
+           $notification = "Votre inscription a bien été prise en compte. <br /> Vous pouvez maintenant vous connecter." ; 
+        } else {
+            $notification = "Un problème est parvenu, merci de valider à nouveau votre inscription." ; 
+
         }
 
         return $this->render('register/index.html.twig', [
             'form' => $form->createView(),
+            'notification' => $notification
         ]);
     }
 }
