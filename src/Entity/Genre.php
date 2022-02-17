@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\GenreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GenreRepository::class)]
@@ -14,15 +15,12 @@ class Genre
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\OneToMany(mappedBy: 'genre', targetEntity: Book::class)]
     private $name;
-
-    #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'genre')]
-    private $books;
 
     public function __construct()
     {
-        $this->books = new ArrayCollection();
+        $this->name = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -30,26 +28,31 @@ class Genre
         return $this->id;
     }
 
-    public function getName(): ?string
+    /**
+     * @return Collection|Book[]
+     */
+    public function getName(): Collection
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function addName(Book $name): self
     {
-        $this->name = $name;
+        if (!$this->name->contains($name)) {
+            $this->name[] = $name;
+            $name->setGenre($this);
+        }
 
         return $this;
     }
 
-    public function __toString()
+    public function removeName(Book $name): self
     {
-        return $this->name;
-    }
-    public function removeBook(Book $book): self
-    {
-        if ($this->books->removeElement($book)) {
-            $book->removeGenre($this);
+        if ($this->name->removeElement($name)) {
+            // set the owning side to null (unless already changed)
+            if ($name->getGenre() === $this) {
+                $name->setGenre(null);
+            }
         }
 
         return $this;

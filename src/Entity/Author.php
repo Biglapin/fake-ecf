@@ -15,21 +15,18 @@ class Author
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer')]
-    private $id_author;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $firstname;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $last_name;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $lastname;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $first_name;
-
-    #[ORM\OneToMany(mappedBy: 'id_author', targetEntity: Book::class, orphanRemoval: true)]
-    private $books;
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Book::class)]
+    private $FullName;
 
     public function __construct()
     {
-        $this->books = new ArrayCollection();
+        $this->FullName = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -37,66 +34,51 @@ class Author
         return $this->id;
     }
 
-    public function getIdAuthor(): ?int
+    public function getFirstname(): ?string
     {
-        return $this->id_author;
+        return $this->firstname;
     }
 
-    public function setIdAuthor(int $id_author): self
+    public function setFirstname(string $firstname): self
     {
-        $this->id_author = $id_author;
+        $this->firstname = $firstname;
 
         return $this;
     }
 
-    public function getLastName(): ?string
+    public function getLastname(): ?string
     {
-        return $this->last_name;
+        return $this->lastname;
     }
 
-    public function setLastName(?string $last_name): self
+    public function setLastname(string $lastname): self
     {
-        $this->last_name = $last_name;
+        $this->lastname = $lastname;
 
         return $this;
     }
 
-    public function getFirstName(): ?string
+    public function getFullName(): ?string
     {
-        return $this->first_name;
+        return $this->firstname + " " + $this->lastname;
     }
 
-    public function setFirstName(?string $first_name): self
+    public function addFullName(Book $fullName): self
     {
-        $this->first_name = $first_name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Book[]
-     */
-    public function getBooks(): Collection
-    {
-        return $this->books;
-    }
-
-    public function addBook(Book $book): self
-    {
-        if (!$this->books->contains($book)) {
-            $this->books[] = $book;
-            $book->setIdAuthor($this);
+        if (!$this->FullName->contains($fullName)) {
+            $this->FullName[] = $fullName;
+            $fullName->setAuthor($this);
         }
 
         return $this;
     }
 
-    public function removeBook(Book $book): self
+    public function removeFullName(Book $fullName): self
     {
-        if ($this->books->removeElement($book)) {
+        if ($this->FullName->removeElement($fullName)) {
             // set the owning side to null (unless already changed)
-            if ($book->getIdAuthor() === $this) {
-                $book->setIdAuthor(null);
+            if ($fullName->getAuthor() === $this) {
+                $fullName->setAuthor(null);
             }
         }
 

@@ -28,7 +28,6 @@ class UserCrudController extends AbstractCrudController
             TextField::new('family_name', "Nom de famille"),
             TextField::new('adress', 'Adresse'),
             DateField::new('birth_date', 'Date de Naissance'),
-            ChoiceField::new('roles')
         ];
     }
     

@@ -18,9 +18,8 @@ class AuthorCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id_author'),
-            TextField::new('first_name', 'Prénom'),
-            TextField::new('last_name', "Nom"),
+            TextField::new('firstName', 'Prénom'),
+            TextField::new('lastName', "Nom"),
         ];
     }
     
