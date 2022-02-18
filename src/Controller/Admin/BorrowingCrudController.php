@@ -24,6 +24,8 @@ class BorrowingCrudController extends AbstractCrudController
             DateTimeField::new('start_date'),
             DateTimeField::new('end_date'),
             BooleanField::new('is_late'),
+            AssociationField::new('book'),
+            AssociationField::new('user')
         ];
     }
     

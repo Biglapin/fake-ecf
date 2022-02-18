@@ -22,6 +22,12 @@ class Borrowing
     #[ORM\Column(type: 'boolean')]
     private $isLate;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'borrowings')]
+    private $user;
+
+    #[ORM\OneToOne(targetEntity: Book::class, cascade: ['persist', 'remove'])]
+    private $book;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +65,30 @@ class Borrowing
     public function setIsLate(bool $isLate): self
     {
         $this->isLate = $isLate;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getBook(): ?Book
+    {
+        return $this->book;
+    }
+
+    public function setBook(?Book $book): self
+    {
+        $this->book = $book;
 
         return $this;
     }
