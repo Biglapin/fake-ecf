@@ -15,43 +15,61 @@ class Genre
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\OneToMany(mappedBy: 'genre', targetEntity: Book::class)]
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
+    #[ORM\OneToMany(mappedBy: 'genre', targetEntity: Book::class)]
+    private $author;
 
     public function __construct()
     {
-        $this->name = new ArrayCollection();
+        $this->author = new ArrayCollection();
     }
-
+    public function __toString(): string
+    {
+        return $this->name;
+    }
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return Collection|Book[]
-     */
-    public function getName(): Collection
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function addName(Book $name): self
+    public function setName(string $name): self
     {
-        if (!$this->name->contains($name)) {
-            $this->name[] = $name;
-            $name->setGenre($this);
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Book[]
+     */
+    public function getAuthor(): Collection
+    {
+        return $this->author;
+    }
+
+    public function addAuthor(Book $author): self
+    {
+        if (!$this->author->contains($author)) {
+            $this->author[] = $author;
+            $author->setGenre($this);
         }
 
         return $this;
     }
 
-    public function removeName(Book $name): self
+    public function removeAuthor(Book $author): self
     {
-        if ($this->name->removeElement($name)) {
+        if ($this->author->removeElement($author)) {
             // set the owning side to null (unless already changed)
-            if ($name->getGenre() === $this) {
-                $name->setGenre(null);
+            if ($author->getGenre() === $this) {
+                $author->setGenre(null);
             }
         }
 

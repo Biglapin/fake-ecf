@@ -30,9 +30,11 @@ class Book
     #[ORM\Column(type: 'boolean')]
     private $isReserved;
 
-    #[ORM\ManyToOne(targetEntity: Genre::class, inversedBy: 'name')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Genre::class, inversedBy: 'author')]
     private $genre;
+
+    #[ORM\ManyToOne(targetEntity: Author::class, inversedBy: 'author')]
+    private $author;
 
     public function getId(): ?int
     {
@@ -107,6 +109,18 @@ class Book
     public function setGenre(?Genre $genre): self
     {
         $this->genre = $genre;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?Author
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?Author $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

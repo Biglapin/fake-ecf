@@ -5,10 +5,12 @@ namespace App\Controller\Admin;
 use App\Entity\Book;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class BookCrudController extends AbstractCrudController
@@ -24,7 +26,9 @@ class BookCrudController extends AbstractCrudController
         return [
             TextField::new('title'),
             TextEditorField::new('description'),
-            AssociationField::new('genre'),            
+            AssociationField::new('genre'),  
+            AssociationField::new('author'), 
+            BooleanField::new('isReserved')         
         ];
     }
     
