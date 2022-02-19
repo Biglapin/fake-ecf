@@ -44,6 +44,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Borrowing::class)]
     private $borrowings;
 
+    #[ORM\Column(type: 'boolean')]
+    private $is_confirmed;
+
     public function __construct()
     {
         $this->borrowings = new ArrayCollection();
@@ -208,6 +211,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $borrowing->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsConfirmed(): ?bool
+    {
+        return $this->is_confirmed;
+    }
+
+    public function setIsConfirmed(bool $is_confirmed): self
+    {
+        $this->is_confirmed = $is_confirmed;
 
         return $this;
     }

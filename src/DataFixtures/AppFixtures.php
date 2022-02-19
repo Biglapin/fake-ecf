@@ -23,19 +23,6 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
-
-       
-         $user = new User();
-
-        $user->setEmail('kilou@test.com');
-        $user->setRoles(['ROLE_USER']);
-        $user->setPassword($this->hasher->hashPassword($user, 'password'));
-
-
-    $manager->persist($user);   
-
          $faker = Factory::create('fr-FR');
                // create 20 authors!
                 for ($i = 0; $i < 20; $i++) {

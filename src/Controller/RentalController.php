@@ -8,10 +8,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class RentalController extends AbstractController
-{
+{   
+    #[IsGranted('ROLE_USER')]
     #[Route('/rental', name: 'rental')]
 /*     public function indexBis(bookRepository $bookRepository): Response
     {
@@ -22,6 +23,8 @@ class RentalController extends AbstractController
  */
 
  //Bundle KNP pour gérer la pagination 
+    
+
     public function index( Request $request, BookRepository $bookRepository, PaginatorInterface $paginator): Response
     {
         $book = $bookRepository->findAll();

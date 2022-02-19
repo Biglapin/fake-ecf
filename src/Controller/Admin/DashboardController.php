@@ -11,11 +11,13 @@ use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController
 {
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
@@ -31,10 +33,13 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Livre', 'fas fa-list', Book::class);
-        yield MenuItem::linkToCrud('Genre', 'fas fa-user', Genre::class);
-        yield MenuItem::linkToCrud('Author', 'fas fa-user', Author::class);
-        yield MenuItem::linkToCrud('Borrowing', 'fas fa-user', Borrowing::class);
+        yield MenuItem::section("Gestion médiathèque");
+        yield MenuItem::linkToCrud('Book', 'fas fa-book', Book::class);
+        yield MenuItem::linkToCrud('Genre', 'fas fa-bookmark', Genre::class);
+        yield MenuItem::linkToCrud('Author', 'fas fa-male', Author::class);
+        yield MenuItem::linkToCrud('Borrowing', 'fas fa-cart-arrow-down', Borrowing::class);
+        yield MenuItem::section("Admin");
+        
         yield MenuItem::linkToCrud('User', 'fas fa-user', User::class);
     }
 }
