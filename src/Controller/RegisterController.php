@@ -35,14 +35,16 @@ class RegisterController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
            $user = $form->getData();
-
+           
            $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
            
            $user->setPassword($hashedPassword);
-
+           
            $this->entityManager->persist($user);
            $this->entityManager->flush();
            $notification = "Votre inscription a bien été prise en compte. <br /> Vous pouvez maintenant vous connecter." ; 
+           
+           return $this->redirectToRoute('app_login');
         } else {
             $notification = "Un problème est parvenu, merci de valider à nouveau votre inscription." ; 
 

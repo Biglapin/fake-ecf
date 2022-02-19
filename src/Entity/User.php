@@ -45,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $borrowings;
 
     #[ORM\Column(type: 'boolean')]
-    private $is_confirmed;
+        private bool $is_confirmed = false;
 
     public function __construct()
     {
@@ -87,6 +87,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
+        
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
