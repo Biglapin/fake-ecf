@@ -2,7 +2,9 @@
 
 namespace App\Classe;
 
+use App\Entity\Genre;
 use App\Entity\Book;
+
 
 class Search
 {
@@ -12,7 +14,12 @@ class Search
     public $string = '';
 
     /**
-     * @var Category[]
+     * @var Genre[]
      */
-    public $categories = [];
+    public $name = [];
+    
+    /**
+     * @var Book[]
+     */
+    public $title = [];
 }

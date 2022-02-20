@@ -20,7 +20,8 @@ class RegisterType extends AbstractType
             ->add('email', EmailType::class)
             ->add('password', PasswordType::class)
             ->add('birth_date', DateType::class,  [
-                'label' => 'Date de naissance'
+                'label' => 'Date de naissance',
+                'widget' => 'single_text',
             ])
             ->add('adress', TextType::class,  [
                 'label' => 'Votre Adresse '

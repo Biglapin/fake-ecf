@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Classe\Search;
 use App\Entity\Genre;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -18,6 +19,8 @@ class GenreRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Genre::class);
     }
+
+
 
     // /**
     //  * @return Genre[] Returns an array of Genre objects

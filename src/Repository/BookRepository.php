@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Classe\Search;
+use App\Entity\Genre;
 use App\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,22 +21,33 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
-    // /**
-    //  * @return Book[] Returns an array of Book objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+      * Request to search book 
+      * @return Book[] Returns an array of Book objects
+     */
+    public function findWithSearch(Search $search)
     {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $query =  $this
+            ->createQueryBuilder('b')
+            ->select('n', 'b')
+            ->join('b.genre', 'n');
+
+            if(!empty($search->name)) {
+                $query = $query
+                ->andWhere('n.id IN (:name)')
+                ->setParameter('genre', $search->genre);
+        }
+
+        if (!empty($search->string)) {
+            $query = $query
+                ->andWhere('b.genre LIKE :string')
+                ->setParameter('string', "%{$search->string}%");
+        }
+
+        return $query->getQuery()->getResult();
     }
-    */
+}
+
 
     /*
     public function findOneBySomeField($value): ?Book
@@ -47,4 +60,4 @@ class BookRepository extends ServiceEntityRepository
         ;
     }
     */
-}
+

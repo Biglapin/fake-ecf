@@ -2,8 +2,13 @@
 
 namespace App\Controller;
 
+use App\Classe\Search;
+use App\Entity\Book;
+use App\Entity\Genre;
+use App\Form\SearchType;
 use App\Repository\BookRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,23 +18,33 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class RentalController extends AbstractController
 {   
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+
+
     #[IsGranted('ROLE_USER')]
     #[Route('/rental', name: 'rental')]
-/*     public function indexBis(bookRepository $bookRepository): Response
-    {
-        return $this->render('rental/rental.html.twig', [
-            'books' => $bookRepository->findBook(),
-        ]);
-    }
- */
-
- //Bundle KNP pour gérer la pagination 
-    
-
+    //Bundle KNP pour gérer la pagination 
     public function index( Request $request, BookRepository $bookRepository, PaginatorInterface $paginator): Response
     {
-        $book = $bookRepository->findAll();
+
+       // $products = $this->entityManager->getRepository(Book::class)->findAll();
+        $search = new Search();
+        $form = $this->createForm(SearchType::class, $search);
         
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $products = $this->entityManager->getRepository(Book::class)->findWithSearch($search);
+            dd($search);
+        } else {
+            $products = $this->entityManager->getRepository(Book::class)->findAll();
+        }
+
+        $book = $bookRepository->findAll();
         $book = $paginator->paginate(
             $book, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
@@ -38,6 +53,7 @@ class RentalController extends AbstractController
 
         return $this->render('rental/rental.html.twig', [
             'books' => $book,
+            'form' => $form->createView(),
         ]);
     }
 }

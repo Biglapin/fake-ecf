@@ -29,13 +29,11 @@ class RegisterController extends AbstractController
         $notification = null;
 
         $user = new User();
-        $form = $this->createForm( RegisterType::class, $user);
+        $form = $this->createForm( RegisterType::class, $user)->handleRequest($request);
 
-        $form->handleRequest($request);
-
+   
         if ($form->isSubmitted() && $form->isValid()) {
-           $user = $form->getData();
-           
+
            $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
            
            $user->setPassword($hashedPassword);
@@ -43,12 +41,13 @@ class RegisterController extends AbstractController
            $this->entityManager->persist($user);
            $this->entityManager->flush();
            $notification = "Votre inscription a bien été prise en compte. <br /> Vous pouvez maintenant vous connecter." ; 
-           
-           return $this->redirectToRoute('app_login');
-        } else {
-            $notification = "Un problème est parvenu, merci de valider à nouveau votre inscription." ; 
 
-        }
+           //return $this->redirectToRoute('app_login');
+
+        } else {
+           // $notification = "Un problème est parvenu, merci de valider à nouveau votre inscription." ; 
+
+        } 
 
         return $this->render('register/index.html.twig', [
             'form' => $form->createView(),
