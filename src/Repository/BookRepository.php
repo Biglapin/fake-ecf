@@ -27,27 +27,28 @@ class BookRepository extends ServiceEntityRepository
      */
     public function findWithSearch(Search $search)
     {
-        $query =  $this
+       $query =  $this
             ->createQueryBuilder('b')
-            ->select('n', 'b')
-            ->join('b.genre', 'n');
-
-            if(!empty($search->name)) {
+            ->select('g', 'b')
+            ->join('b.genre', 'g');
+            dump($query);
+         if(!empty($search->name)) {
                 $query = $query
-                ->andWhere('n.id IN (:name)')
-                ->setParameter('genre', $search->genre);
+                ->andWhere('g.name LIKE :name')
+                ->setParameter('name', $search->name);
+                dump($search);
         }
-
+        
         if (!empty($search->string)) {
             $query = $query
-                ->andWhere('b.genre LIKE :string')
-                ->setParameter('string', "%{$search->string}%");
-        }
-
+                ->andWhere("b.title = :string")
+                ->setParameter('string', "%{$search->string}");
+                dump($search);
+        } 
+      
         return $query->getQuery()->getResult();
     }
 }
-
 
     /*
     public function findOneBySomeField($value): ?Book

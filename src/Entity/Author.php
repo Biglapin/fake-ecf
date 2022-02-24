@@ -22,9 +22,6 @@ class Author
     private $lastname;
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Book::class)]
-    private $FullName;
-
-    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Book::class)]
     private $author;
 
     public function __construct()
@@ -61,33 +58,6 @@ class Author
     public function setLastname(string $lastname): self
     {
         $this->lastname = $lastname;
-
-        return $this;
-    }
-
-    public function getFullName(): ?string
-    {
-        return $this->firstname + " " + $this->lastname;
-    }
-
-    public function addFullName(Book $fullName): self
-    {
-        if (!$this->FullName->contains($fullName)) {
-            $this->FullName[] = $fullName;
-            $fullName->setAuthor($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFullName(Book $fullName): self
-    {
-        if ($this->FullName->removeElement($fullName)) {
-            // set the owning side to null (unless already changed)
-            if ($fullName->getAuthor() === $this) {
-                $fullName->setAuthor(null);
-            }
-        }
 
         return $this;
     }
