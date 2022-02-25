@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class RentalController extends AbstractController
 {   
@@ -35,17 +36,45 @@ class RentalController extends AbstractController
        // $book = $this->entityManager->getRepository(Genre::class)->findAll();
         $search = new Search();
         $form = $this->createForm(SearchType::class, $search);
+        $genres = $genreRepository->findAll();
         
         $form->handleRequest($request);
+        if ($request->get("ajax")){
+            $genresCheckbox = $request->get('genre');
+            $books = $bookRepository->findBy(["genre" => $genresCheckbox]);
 
+            $responses = [];
+
+            foreach($books as $key => $book){
+                $responses[$key]["id"] = $book->getId(); 
+                
+            }
+            
+            if ($responses == []){
+                $books = $bookRepository->findAll();
+                $responses = [];
+
+                foreach($books as $key => $book){
+                    $responses[$key]["id"] = $book->getId(); 
+                    
+                }
+            }
+            return new JsonResponse([
+                'books' => $responses
+            ]);
+        }
+
+        //validation du formulaire
         if ($form->isSubmitted() && $form->isValid()){
-           
-            $book = $this->entityManager->getRepository(Book::class)->findWithSearch($search);
-           
+            if (isset($search)){
+                $books = $bookRepository->findWithSearch($search);
+                dd($search);
+            } 
+        
         } else {
-            $book = $this->entityManager->getRepository(Book::class)->findAll();
-            $book = $paginator->paginate(
-                $book, /* query NOT result */
+            $books = $this->entityManager->getRepository(Book::class)->findAll();
+            $books = $paginator->paginate(
+                $books, /* query NOT result */
                 $request->query->getInt('page', 1)/*page number*/,
                 10/*limit per page*/
             );
@@ -53,7 +82,8 @@ class RentalController extends AbstractController
 
 
         return $this->render('rental/rental.html.twig', [
-            'books' => $book,
+            'books' => $books,
+            'genres' => $genres,
             'form' => $form->createView(),
         ]);
     }

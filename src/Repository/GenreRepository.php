@@ -20,7 +20,19 @@ class GenreRepository extends ServiceEntityRepository
         parent::__construct($registry, Genre::class);
     }
 
-
+/*     public function getBooks($books, $genre = null){
+        $query = $this->createQueryBuilder('g')
+            ->where('g.author IN (:books)')
+            ->setParameter(':books', array_values($books->getId()));
+      
+        if ($genre != null){
+            $query->andWhere('g.id IN (:genre)')
+                ->setParameter(':genre', array_values($genre));
+        }
+    
+        return $query->getQuery()->getResult();
+    } */
+        
 
     // /**
     //  * @return Genre[] Returns an array of Genre objects

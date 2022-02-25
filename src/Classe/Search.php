@@ -13,13 +13,6 @@ class Search
      */
     public $string = '';
 
-    /**
-     * @var Genre[]
-     */
-    public $name = [];
-    
-    /**
-     * @var Book[]
-     */
-    public $title = [];
 }
+
+

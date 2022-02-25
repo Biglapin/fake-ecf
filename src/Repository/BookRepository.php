@@ -31,18 +31,19 @@ class BookRepository extends ServiceEntityRepository
             ->createQueryBuilder('b')
             ->select('g', 'b')
             ->join('b.genre', 'g');
-            dump($query);
-         if(!empty($search->name)) {
-                $query = $query
-                ->andWhere('g.name LIKE :name')
-                ->setParameter('name', $search->name);
+ 
+
+         if (!empty($search->genre)) {
+            $query = $query
+                ->andWhere('g.id IN (:name)')
+                ->setParameter('name', $search->genre);
                 dump($search);
         }
         
         if (!empty($search->string)) {
             $query = $query
-                ->andWhere("b.title = :string")
-                ->setParameter('string', "%{$search->string}");
+                ->andWhere("b.title LIKE :string")
+                ->setParameter('string', "%{$search->string}%");
                 dump($search);
         } 
       
@@ -50,15 +51,6 @@ class BookRepository extends ServiceEntityRepository
     }
 }
 
-    /*
-    public function findOneBySomeField($value): ?Book
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+    
+
 

@@ -58,45 +58,54 @@
                     <a class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl " href="#">
 				Store
 			</a>
-
+                {{ form_start(form, {"attr":{ "id": "filter" }}) }}
                     <div class="flex items-center" id="store-nav-content">
-                        {{ form(form) }}
+                      {{ form_row(form.string)}}
+                       <div>
+                            {% for genre in genres %}
+                                <input type="checkbox" name="genre[]" id="genre{{ genre.id }}" value="{{genre.id}}">
+                                <label for="genre{{ genre.id }}">{{ genre.name }}</label>
+                            {% endfor %}
+                       </div>
+                       {{ form_rest(form) }}
                     </div>
+                {{ form_end(form) }}
               </div>
             </nav>
+            <div id="books">
+                {% for book in books %}
             
-            {% for book in books %}
-            
-            <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col text-center">
-                <a href="#">
-                    <img class="hover:grow hover:shadow-lg" src="{{ asset('/images/book.png') }}">
-                    <div class="pt-3 flex items-center justify-center">
-                        <p class="text-xl mb-2 font-bold ">{{ book.title }}</p>
+                    <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col text-center">
+                        <a href="#">
+                            <img class="hover:grow hover:shadow-lg" src="{{ asset('/images/book.png') }}">
+                            <div class="pt-3 flex items-center justify-center">
+                                <p class="text-xl mb-2 font-bold ">{{ book.title }}</p>
+                            </div>
+                            
+                                <p class="pt-1 text-gray-700 text-base">{{ book.Description }}</p>
+                        </a>
+                            
+                        {% if book.isReserved == true %}
+                        <button 
+                            class="bg-transparent  text-blue-700 font-semibold 
+                                py-2 px-4 border border-blue-500
+                                rounded opacity-50 cursor-not-allowed"
+                                >
+                        Non Disponible
+                        </button>
+                        {% else %}
+                        <button 
+                            class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold 
+                                hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent
+                                rounded "
+                                >
+                            Emprunte moi
+                        </button>
+                        {% endif %}
+                        
                     </div>
-                    
-                        <p class="pt-1 text-gray-700 text-base">{{ book.Description }}</p>
-                </a>
-                    
-                {% if book.isReserved == true %}
-                <button 
-                    class="bg-transparent  text-blue-700 font-semibold 
-                          py-2 px-4 border border-blue-500
-                          rounded opacity-50 cursor-not-allowed"
-                          >
-                   Non Disponible
-                </button>
-                {% else %}
-                <button 
-                    class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold 
-                         hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent
-                          rounded "
-                          >
-                    Emprunte moi
-                </button>
-                {% endif %}
-                
+                {% endfor %}   
             </div>
-            {% endfor %}   
         </div>
         <div class="text-center justify-center flex h-12 font-medium rounded-full bg-gray-20">
         </div>
@@ -108,3 +117,23 @@
 
 
 {% endblock %}
+    {% block javascripts %}
+
+        <script>
+            elementsBooks = [
+                {% for book in books %}
+                    {   
+                        "id": "{{ book.id }}", 
+                        "title":  "{{ book.title }}", 
+                        "description": "{{ book.description }}", 
+                        "image": "{{ asset('/images/book.png') }}",
+                        'isReserved': "{{ book.isReserved }}"
+                    },
+                {% endfor %}
+            ] 
+            
+        </script>
+    
+    
+    {{ encore_entry_script_tags('searchByGenre') }}
+    {% endblock %}

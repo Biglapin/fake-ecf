@@ -26,14 +26,15 @@ class SearchType extends AbstractType
                     'class' => 'form-check mb-3'
                 ]
             ])
-            ->add('genre', EntityType::class, [
+     /*        ->add('genre', EntityType::class, [
+              "choice_label" => 'name'  
               'label' => false,
               'required' => false,
               'mapped' => false,
               'class' => Genre::class,
               'multiple' => true,
               'expanded' => true, 
-          ])
+          ]) */
             ->add('submit', SubmitType::class, [
                 'label' => 'Filtrer',
                 'attr' => [
