@@ -79,4 +79,13 @@ class BookController extends AbstractController
 
         return $this->redirectToRoute('book_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/rent/{id}', name: 'rent_book', methods: ['GET'])]
+    public function rentBook(Book $book, EntityManagerInterface $entityManager): Response
+    {
+        $book->setIsReserved(true);
+        $entityManager->flush();
+
+       return $this->redirectToRoute('rental');
+       
+    }
 }
