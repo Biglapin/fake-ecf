@@ -5,16 +5,23 @@ namespace App\Entity;
 use App\Repository\BookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 class Book
 {
+    /**
+     * @Groups({"show_books"})
+     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    /**
+     * @Groups({"show_books"})
+     */
     #[ORM\Column(type: 'string', length: 255)]
     private $title;
 
@@ -27,6 +34,9 @@ class Book
     #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
+    /**
+     * @Groups({"show_books"})
+     */
     #[ORM\Column(type: 'boolean')]
     private $isReserved;
 

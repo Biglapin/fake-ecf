@@ -4,12 +4,11 @@ namespace App\Controller;
 
 use App\Classe\Search;
 use App\Entity\Book;
-use App\Entity\Genre;
 use App\Form\SearchType;
 use App\Repository\BookRepository;
 use App\Repository\GenreRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,28 +16,31 @@ use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class RentalController extends AbstractController
 {   
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(
+        EntityManagerInterface $entityManager, 
+        private ManagerRegistry $doctrine, 
+        private SerializerInterface $serializer)
     {
         $this->entityManager = $entityManager;
+        $this->serializer = $serializer;
     }
 
 
-
     #[IsGranted('ROLE_USER')]
-    #[Route('/rental', name: 'rental')]
-    //Bundle KNP pour gérer la pagination 
+    #[Route('/rental', name: 'rental')]   
     public function index( Request $request, BookRepository $bookRepository, PaginatorInterface $paginator, GenreRepository $genreRepository): Response
     {
-
-       // $book = $this->entityManager->getRepository(Genre::class)->findAll();
         $search = new Search();
         $form = $this->createForm(SearchType::class, $search);
         $genres = $genreRepository->findAll();
         
         $form->handleRequest($request);
+
+        //ajax response for the rental search and the checkbox
         if ($request->get("ajax")){
             $genresCheckbox = $request->get('genre');
             $books = $bookRepository->findBy(["genre" => $genresCheckbox]);
@@ -46,8 +48,7 @@ class RentalController extends AbstractController
             $responses = [];
 
             foreach($books as $key => $book){
-                $responses[$key]["id"] = $book->getId(); 
-                
+                $responses[$key]["id"] = $book->getId();  
             }
             
             if ($responses == []){
@@ -56,7 +57,6 @@ class RentalController extends AbstractController
 
                 foreach($books as $key => $book){
                     $responses[$key]["id"] = $book->getId(); 
-                    
                 }
             }
             return new JsonResponse([
@@ -64,14 +64,14 @@ class RentalController extends AbstractController
             ]);
         }
 
-        //validation du formulaire
+        //Form validation 
         if ($form->isSubmitted() && $form->isValid()){
             if (isset($search)){
                 $books = $bookRepository->findWithSearch($search);
-                dd($search);
             } 
         
         } else {
+             //Bundle KNP pour gérer la pagination 
             $books = $this->entityManager->getRepository(Book::class)->findAll();
             $books = $paginator->paginate(
                 $books, /* query NOT result */
@@ -80,11 +80,27 @@ class RentalController extends AbstractController
             );
         }
 
-
         return $this->render('rental/rental.html.twig', [
             'books' => $books,
             'genres' => $genres,
             'form' => $form->createView(),
         ]);
+    }
+    
+
+    #[Route('/allbook', name: 'all_book', methods: ['GET'])]  
+    public function fetchAllBook(SerializerInterface $serializer)
+    {
+        $bookAll = $this->doctrine
+            ->getRepository(Book::class)
+            ->findAll();
+            //dd($bookAll);
+        $data = $serializer->serialize($bookAll, 'json', ['groups' => "show_books"]);
+
+        $response = new Response($data, 200, [
+            'Content-Type', 'application/json'
+        ]);
+       
+        return $response;
     }
 }

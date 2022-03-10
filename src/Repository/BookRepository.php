@@ -37,14 +37,12 @@ class BookRepository extends ServiceEntityRepository
             $query = $query
                 ->andWhere('g.id IN (:name)')
                 ->setParameter('name', $search->genre);
-                dump($search);
         }
         
         if (!empty($search->string)) {
             $query = $query
                 ->andWhere("b.title LIKE :string")
-                ->setParameter('string', "%{$search->string}%");
-                dump($search);
+                ->setParameter('string', "%{$search->string}%");    
         } 
       
         return $query->getQuery()->getResult();

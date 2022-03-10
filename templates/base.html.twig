@@ -3,7 +3,15 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" 
+                    integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" 
+                    crossorigin="anonymous" 
+                    referrerpolicy="no-referrer">
+            </script>
+
+        {% endblock %}
     </head>
     <body>
         {% block body %}
@@ -16,6 +24,8 @@
         <span class="mx-3">•</span>
         <a href="#" class="hover:underline">Privacy</a>
     </footer>
-        {% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
+        {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+        {% endblock %}
     </body>
 </html>
