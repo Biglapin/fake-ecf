@@ -7,8 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
+#[Vich\Uploadable]
 class Book
 {
     /**
@@ -25,8 +29,14 @@ class Book
     #[ORM\Column(type: 'string', length: 255)]
     private $title;
 
+
     #[ORM\Column(type: 'string',nullable: true, length: 255)]
     private $images;
+
+    
+    #[Vich\UploadableField(mapping: 'books_images' ,fileNameProperty: 'images')]
+    private ?File $imageFile = null;
+
 
     #[ORM\Column(type: 'date', nullable: true)]
     private $publishing_date;
@@ -64,6 +74,24 @@ class Book
         $this->title = $title;
 
         return $this;
+    } 
+    
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+        if ($image) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updatedAt = new \DateTime('now');
+        }
+    }
+
+    public function getImageFile()
+    {
+        return $this->imageFile;
     }
 
     public function getImages(): ?string
